@@ -87,17 +87,17 @@ IWTlmFoF <- function(formula,B=1000,method='residuals'){
   
   print('First step: basis expansion')
   #splines coefficients:
-  coeff <- eval <- data
+  coeff <- eval <- data.eval
   p <- dim(coeff)[2]
   
-  data.eval <- coeff
+  
   
   print('Second step: joint univariate tests')
   #univariate permutations
   #regr0old = lm.fit(design.matrix[[1]],coeff)
   lm.fit.mod <- function(X,var.keep){
     x=X$design.matrix[,var.keep,drop = F]
-    return(lm.fit(x,y=X$y))
+    return(.lm.fit(x,y=X$y))
   }
   regr0 <- lapply(design.matrix,lm.fit.mod,var.keep=1:(nvar+1))
   
@@ -290,7 +290,7 @@ IWTlmFoF <- function(formula,B=1000,method='residuals'){
   
   print('Interval Testing Procedure completed')
   
-  ITPresult <- list(call=cl,basis='B-spline',
+  IWTresult <- list(call=cl,basis='B-spline',
                     unadjusted_pval_F=pval_glob,
                     pval_matrix_F=matrice_pval_asymm_glob,
                     adjusted_pval_F=corrected.pval_glob,
@@ -304,8 +304,8 @@ IWTlmFoF <- function(formula,B=1000,method='residuals'){
                     R2.eval=R2.t,
                     heatmap.matrix.F=matrice_pval_symm_glob,
                     heatmap.matrix.t=matrice_pval_symm_part)
-  class(ITPresult) = 'IWTlm'
-  return(ITPresult)
+  class(IWTresult) = 'IWTlm'
+  return(IWTresult)
 }
 
 
